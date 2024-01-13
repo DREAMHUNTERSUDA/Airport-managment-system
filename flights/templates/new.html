@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block body %}
+
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav {
+    background-color: #007bff;
+    padding: 10px;
+  }
+
+  nav a {
+    color: white;
+    text-decoration: none;
+  }
+
+  form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  input.form-control {
+    width: 200px;
+  }
+
+  button.btn {
+    background-color: #007bff;
+    color: white;
+  }
+
+  table {
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  th, td {
+    text-align: center;
+  }
+
+  .btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+  }
+
+  .btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-success.disabled {
+    background-color: #28a745;
+    opacity: 0.7;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="#">Your Airline</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_available_flights' %}">View Flights</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_booking' %}">View Booking</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Form for Available Flights -->
+<form class="form-inline my-2 my-lg-0" method="post" action="{% url 'view_available_flights'%}" role="form">
+  {% csrf_token %}
+  <div class="form-group">
+    <input class="form-control mr-sm-2" placeholder="Source" name="source" type="text">
+    <input class="form-control mr-sm-2" placeholder="Destination" name="destination" type="text">
+    <button class="btn btn-secondary my-2 my-sm-0" type="submit">View All Available Flights</button>
+  </div>
+</form>
+
+<!-- Display error message for available flights -->
+{% if error_message_flight %}
+  <p class="text-danger"><strong>{{ error_message_flight }}</strong></p>
+{% endif %}
+
+<!-- Display available flights in a table -->
+{% if flights %}
+  <table class="table table-hover">
+    <!-- ... your table content ... -->
+  </table>
+{% endif %}
+
+<!-- Form for View Booking -->
+</form>
+{% if error_message_flight %}
+    <p><strong>{{ error_message_flight }}</strong></p>
+{% endif %}
+{% if flights %}
+<table class="table table-hover">
+<thead>
+<tr>
+  <th scope="col">Flight No.</th>
+  <th scope="col">Airline</th>
+  <th scope="col">No. of seats</th>
+  <th scope="col">Source</th>
+  <th scope="col">Destination</th>
+  <th scope="col">Departure Time</th>
+  <th scope="col">Arrival Time</th>
+</tr>
+</thead>
+<tbody>
+{% for flight in flights %}
+    <tr>
+      <td>{{flight.flight_no}}</td>
+      <td>{{flight.airline_name}}</td>
+      <td>{{ flight.no_of_seats }}</td>
+      <td>{{ flight.source}}</td>
+      <td>{{ flight.destination}}</td>
+      <td>{{ flight.departure_time}}</td>
+      <td>{{ flight.arrival_time}}</td>
+      <td>
+        {% if flight.no_of_seats > 0 %}
+            <a href="{% url 'book_flight' flight.pk%}" class="btn btn-outline-success" role="button">Book Now!</a>
+        {% else %}
+            <button type="button" class="btn btn-success disabled">Book Now!</button>
+        {% endif %}
+      </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endif %}
+<br>
+<form class="form-inline my-2 my-lg-0" method="post" action="{% url 'view_booking' %}" role="form">
+{% csrf_token %}
+<input class="form-control mr-sm-2" placeholder="Enter PNR" name="pnr" type="text">
+<button class="btn btn-secondary my-2 my-sm-0" type="submit" style="margin-right:10px;">View My Booking</button>
+{% if error_message_booking %}<p><strong>{{ error_message_booking }}</strong></p>{% endif %}
+</form>
+
+{% endblock %}

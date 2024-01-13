@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block body %}
+{% load static %}
+
+<!-- Header Section -->
+<header class="bg-success text-white text-center py-5">
+    <h1 class="display-4">Welcome to Our Flight Booking Service</h1>
+    <p class="lead">Book your flights with ease and convenience</p>
+    <style>
+        .zoomable-image {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .zoomable-image:hover {
+            transform: scale(1.3);
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            /* Adjust border color and thickness as needed */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Adjust shadow as needed */
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            /* Adjust hover shadow as needed */
+        }
+        
+    </style>
+
+</header>
+
+<!-- Flight Search Form -->
+<section class="container mt-5">
+    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'view_available_flights' %}" role="form">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control mr-sm-2" placeholder="Source" name="source" type="text">
+            <input class="form-control mr-sm-2" placeholder="Destination" name="destination" type="text">
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">View All Available Flights</button>
+        </div>
+    </form>
+
+    {% if error_message_flight %}
+    <div class="alert alert-danger mt-3">
+        <strong>{{ error_message_flight }}</strong>
+    </div>
+    {% endif %}
+
+    {% if flights %}
+    <div class="table-responsive mt-3">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Flight No.</th>
+                    <th scope="col">Airline</th>
+                    <th scope="col">No. of seats</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Departure Time</th>
+                    <th scope="col">Arrival Time</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for flight in flights %}
+                <tr>
+                    <td>{{ flight.flight_no }}</td>
+                    <td>{{ flight.airline_name }}</td>
+                    <td>{{ flight.no_of_seats }}</td>
+                    <td>{{ flight.source }}</td>
+                    <td>{{ flight.destination }}</td>
+                    <td>{{ flight.departure_time }}</td>
+                    <td>{{ flight.arrival_time }}</td>
+                    <td>
+                        {% if flight.no_of_seats > 0 %}
+                        <a href="{% url 'book_flight' flight.pk %}" class="btn btn-success" role="button">Book Now!</a>
+                        {% else %}
+                        <button type="button" class="btn btn-success disabled">Book Now!</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Image Cards Section -->
+
+<!-- Image Cards Section -->
+<section class="container mt-5">
+    <h2 class="h3 text-center mb-4 text-danger">Explore Our Destinations</h2>
+    <div class="row">
+        <!-- Image Card 1 -->
+        <div class="col-lg-2 mb-4">
+            <div class="card">
+                <img src="{% static 'images/mumbai.jpg' %}" class="zoomable-image" alt="Destination 1"
+                    style="height: 120px;">
+                <div class="card-caption">
+                    <p class="card-tagline text-center text-success">Mumbai</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Card 2 -->
+        <div class="col-lg-2 mb-4">
+            <div class="card">
+                <img src="{% static 'images/kolkatta.jpg' %}" class="zoomable-image" alt="Destination 2"
+                    style="height: 120px;">
+                <div class="card-caption">
+                    <p class="card-tagline text-center text-success">Kolkatta</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Card 3 -->
+        <div class="col-lg-2 mb-4">
+            <div class="card">
+                <img src="{% static 'images/hyderabad.jpg' %}" class="zoomable-image" alt="Destination 3"
+                    style="height: 120px;">
+                <div class="card-caption">
+                    <p class="card-tagline text-center text-success">Hyderabad</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Card 4 -->
+        <div class="col-lg-2 mb-4">
+            <div class="card">
+                <img src="{% static 'images/banglore.jpg' %}" class="zoomable-image" alt="Destination 4"
+                    style="height: 120px;">
+                <div class="card-caption">
+                    <p class="card-tagline text-center text-success">Banglore</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Card 5 -->
+        <div class="col-lg-2 mb-4">
+            <div class="card">
+                <img src="{% static 'images/chennai.jpg' %}" class="zoomable-image" alt="Destination 5"
+                    style="height: 120px;">
+                <div class="card-caption">
+                    <p class="card-tagline text-center text-success">Chennai</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Card 6 -->
+        <div class="col-lg-2 mb-4">
+            <div class="card">
+                <img src="{% static 'images/agra.jpg' %}" class="zoomable-image" alt="Destination 6"
+                    style="height: 120px;">
+                <div class="card-caption">
+                    <p class="card-tagline text-center text-success">Agra</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Featured Section -->
+<section class="container mt-5">
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Special Offer</h5>
+                    <p class="card-text">Check out our special offers and discounts on selected flights.</p>
+                    <a href="#" class="btn btn-primary">View Offers</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Travel Tips</h5>
+                    <p class="card-text">Explore our travel tips and make your journey smoother.</p>
+                    <a href="#" class="btn btn-primary">Read Tips</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Customer Reviews</h5>
+                    <p class="card-text">Read what our customers are saying about their travel experiences.</p>
+                    <a href="#" class="btn btn-primary">Read Reviews</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Search Form -->
+<section class="container mt-5">
+    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'view_booking' %}" role="form">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" placeholder="Enter PNR" name="pnr" type="text">
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">View My Booking</button>
+    </form>
+
+    {% if error_message_booking %}
+    <div class="alert alert-danger mt-3">
+        <strong>{{ error_message_booking }}</strong>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Footer Section -->
+<footer class="bg-dark text-white text-center py-3 mt-5">
+    <p>&copy; 2023 Your Airline. All rights reserved.</p>
+</footer>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://bootswatch.com/4/united/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: url("{% static 'images/bbg.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        
+        }
+
+        body,
+        .navbar {
+            background-color: #f8f9fa;
+            background-image: url("{% static 'images/bbg.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: fixed;
+            align-items: center;
+        }
+
+        .navbar {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow effect */
+        }
+
+        .container-main {
+            margin-top: 20px;
+            background-color: #ffffff;
+            /* White background for main content */
+            padding: 20px;
+            border-radius: 8px;
+            /* Rounded corners */
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow effect */
+            background-image: url("{% static 'images/bg.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: fixed;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            color: #598be0;
+            /* White text color for a modern look */
+            border-radius: 4px;
+            /* Rounded corners */
+        }
+
+        .footer a {
+            color: #020406;
+            /* White link color */
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 2rem;
+            /* Increase the font size for better visibility */
+            color: #ffffff;
+            /* White text color */
+        }
+
+        .navbar-logo {
+            max-width: 60px;
+            margin-right: 20px;
+            
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1rem;
+            /* Adjust the font size of the navigation links */
+            color: #ffffff;
+            /* White text color for navigation links */
+            margin-right: 15px;
+            /* Add space between navbar items */
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+        <a class="navbar-brand" href="{% url 'airport_mgmt' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo ">
+            Airport Management System
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            {% with url_name=request.resolver_match.url_name %}
+            <ul class="navbar-nav mr-auto justify-content-space-between">
+                <li class="nav-item {% if url_name == 'home' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item {% if url_name == 'view_flights' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'view_flights' %}">View Flights</a>
+                </li>
+                <li class="nav-item {% if url_name == 'security_login' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'security_login' %}">Login as Security</a>
+                </li>
+                <li class="nav-item {% if url_name == 'staff_login' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'staff_login' %}">Login as Staff</a>
+                </li>
+                {% if user.is_authenticated %}
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li> -->
+                {% endif %}
+            </ul>
+            {% endwith %}
+        </div>
+    </nav>
+
+    <div class="container container-main">
+        {% block body %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <small>
+            Designed by <a href="https://github.com/DREAMHUNTERSUDA/" target="_blank">#Sudarshan 2023</a>
+        </small>
+    </footer>
+
+</body>
+
+</html>
