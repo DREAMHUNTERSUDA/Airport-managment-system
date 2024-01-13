@@ -13,7 +13,7 @@ sudo apt-get install wkhtmltopdf
 sudo mysql_secure_installation
 mysql -u root -p
 create database airportdb character set utf8;
-create user airportuser@localhost identified by 'Password@0';
+create user airportuser@localhost identified by 'SUDA@1610';
 grant all privileges on airportdb.* to airportuser@localhost;
 flush privileges;
 exit
