@@ -1,16 +1,15 @@
 # Airport Management System 
-Course project for Database Management System CO301
 
 ## Install components
-```bash
-sudo apt-get update
-sudo apt-get install python-pip python-dev mysql-server libmysqlclient-dev
-sudo apt-get install wkhtmltopdf
+
+ apt-get update
+ apt-get install python-pip python-dev mysql-server libmysqlclient-dev
+apt-get install wkhtmltopdf
 ```
 
 ### Setting up MySQL 
 ```bash
-sudo mysql_secure_installation
+ mysql_secure_installation
 mysql -u root -p
 create database airportdb character set utf8;
 create user airportuser@localhost identified by 'SUDA@1610';
@@ -21,7 +20,7 @@ exit
 
 ### Setting up Virtual Environment and Install Requirements
 ```bash
-sudo pip install virtualenv
+ pip install virtualenv
 python3 -m venv myvenv
 source myvenv/bin/activate
 pip3 install -r requirements.txt
